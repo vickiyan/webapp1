@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+    @{
+        if (IsPost)
+        {
+            string firstname = Request["firstname"];
+            string lastname = Request["lastname"];
+            int salary = Request["annualpay"].AsInt();
+            string salarydate = Request["period"];
+            int total = salary / 12;
+            var pension = Math.Round(total * 0.08);
+
+            var medical = Math.Round(total * 0.02);
+            var dismiss = Math.Round(total * 0.005);
+            var taxamount = Math.Round(total - pension - medical - dismiss);
+            double tax = 0;
+
+
+            if (taxamount >= 80000)
+            { tax = Math.Round((taxamount - 80000) * 0.45 + 25000 * 0.35 + 20000 * 0.3 + 29000 * 0.25 + 4500 * 0.2 + 3000 * 0.1 + 1500 * 0.03); }
+            else if (taxamount >= 55000)
+            { tax = Math.Round((taxamount - 55000) * 0.35 + 20000 * 0.3 + 29000 * 0.25 + 4500 * 0.2 + 3000 * 0.1 + 1500 * 0.03); }
+            else
+             if (taxamount >= 35000)
+            { tax = Math.Round((taxamount - 35000) * 0.3 + 29000 * 0.25 + 4500 * 0.2 + 3000 * 0.1 + 1500 * 0.03); }
+            else if (taxamount >= 9000)
+            { tax = Math.Round((taxamount - 9000) * 0.25 + 4500 * 0.2 + 3000 * 0.1 + 1500 * 0.03); }
+            else if (taxamount >= 4500)
+            { tax = Math.Round((taxamount - 4500) * 0.2 + 3000 * 0.1 + 1500 * 0.03); }
+            else if (taxamount >= 1500)
+            { tax = Math.Round((taxamount - 1500) * 0.1 + 1500 * 0.03); }
+            else
+            { tax = Math.Round(taxamount * 0.03); }
+
+            var netincome = total - tax - pension - medical - dismiss;
+
+            <p>
+                <h3>
+                    you entered:（名字:@firstname，姓氏:@lastname，年薪：@salary，工资起始日期:@salarydate）<br>
+                    Your salary calculation result is :
+                </h3>  <br>
+                <table style="width:100%">
+                    <tr>
+                        <th>名称</th>
+                        <th>工资期</th>
+                        <th>总收入</th>
+                        <th>所得税</th>
+                        <th>净收入</th>
+                        <th>养老金</th>
+                        <th>医疗保险</th>
+                        <th>失业金</th>
+                    </tr>
+                    <tr>
+                        <th>@firstname @lastname</th>
+                        <th>@salarydate</th>
+                        <th>@total</th>
+                        <th>@tax</th>
+                        <th>@netincome</th>
+                        <th>@pension</th>
+                        <th>@medical</th>
+                        <th>@dismiss</th>
+                    </tr>
+                </table>
+            </p>
+        }
+        else
+        {
+            <form method="post" action="">
+                名字:
+                <input type="text" name="firstname" value=""><br><br />
+                姓氏:
+                <input type="text" name="lastName" value=""><br><br>
+                年薪:
+                <input type="number" name="annualpay" value=""><br><br>
+                工资起始日期： <select name="period">
+                    <option value="1月1日-1月31日">1月1日-1月31日</option>
+                    <option value="2月1日-2月28日">2月1日-2月28日</option>
+                    <option value="3月1日-3月31日">3月1日-3月31日</option>
+                    <option value="4月1日-4月30日">4月1日-4月30日</option>
+                    <option value="5月1日-5月31日">5月1日-5月31日</option>
+                    <option value="6月1日-6月30日">6月1日-6月31日</option>
+                    <option value="7月1日-7月31日">7月1日-7月31日</option>
+                    <option value="8月1日-8月30日">8月1日-8月31日</option>
+                    <option value="9月1日-9月30日">9月1日-9月30日</option>
+                    <option value="10月1日-10月31日">10月1日-10月31日</option>
+                    <option value="11月1日-11月30日">11月1日-11月31日</option>
+                    <option value="12月1日-12月31日">12月1日-12月31日</option>
+
+
+                </select>
+
+                <input type="submit" value="Submit" class="submit">
+            </form>
+        }
+    }
+</body>
+</html>
